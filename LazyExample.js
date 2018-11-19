@@ -21,12 +21,13 @@ export default class LazyExample extends React.Component {
   state = this.initial;
 
   goTo = index => {
-    this.setState({ data: this.initial.data.slice(0, index + 13) }, () =>
-      this.flatListRef.scrollToIndex({
-        animated: true,
-        index
-      })
-    );
+    // this.setState({ data: this.initial.data.slice(0, index +1) }, () =>
+
+    // );
+    this.setState({
+      data: this.initial.data.slice(index, index + 30),
+      anchor: index
+    });
   };
 
   render() {
@@ -50,13 +51,12 @@ export default class LazyExample extends React.Component {
           ref={ref => {
             this.flatListRef = ref;
           }}
-          getItemLayout={(data, index) => ({
-            length: 40,
-            offset: 40 * index,
-            index
-          })}
-          onEndReachedThreshold={0.1}
-          onEndReached={() => this.setState({ data: this.initial.data })}
+          onEndReachedThreshold={-0.1}
+          onEndReached={() => {
+            alert("refreshing");
+          }}
+          onRefresh={() => alert("refreshing")}
+          refreshing={false}
           initialNumToRender={20}
           style={{ flex: 1, marginBottom: 20 }}
           data={this.state.data}
