@@ -56,9 +56,7 @@ export default class LazyExample extends React.Component {
             index
           })}
           onEndReachedThreshold={0.1}
-          onEndReached={() =>
-            alert("Not implemented yet: Fetch more from local state")
-          }
+          onEndReached={() => this.setState({ data: this.initial.data })}
           initialNumToRender={20}
           style={{ flex: 1, marginBottom: 20 }}
           data={this.state.data}
