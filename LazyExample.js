@@ -10,60 +10,91 @@ export default class LazyExample extends React.Component {
     if (number < 500) return "gray";
   };
 
-  initial = {
+  state = {
     data: [...Array(500).keys()].map(i => ({
       key: String(i),
       text: `Random text ${i}`,
       color: this.getColor(i)
-    }))
+    })),
+    all: false
   };
 
-  state = this.initial;
+  // componentDidMount = () => {
 
-  goTo = index => {
-    // this.setState({ data: this.initial.data.slice(0, index +1) }, () =>
-
-    // );
-    this.setState({
-      data: this.initial.data.slice(index, index + 30),
-      anchor: index
-    });
-  };
+  //   console.log("---------------");
+  // };
 
   render() {
+    console.log(this.state.data);
+
     return (
       <View style={{ flex: 1 }}>
-        <Button
-          title="0"
-          onPress={() =>
-            this.flatListRef.scrollToIndex({
-              animated: true,
-              index: 0
-            })
-          }
-        />
-        <Button title="100" onPress={() => this.goTo(100)} />
-        <Button title="200" onPress={() => this.goTo(200)} />
-        <Button title="300" onPress={() => this.goTo(300)} />
-        <Button title="400" onPress={() => this.goTo(400)} />
+        {this.state.all && (
+          <View>
+            <Button
+              title="0"
+              onPress={() =>
+                this.flatListRef.scrollToIndex({
+                  animated: true,
+                  index: 0
+                })
+              }
+            />
+            <Button
+              title="100"
+              onPress={() =>
+                this.flatListRef.scrollToIndex({
+                  animated: true,
+                  index: 100
+                })
+              }
+            />
+            <Button
+              title="200"
+              onPress={() =>
+                this.flatListRef.scrollToIndex({
+                  animated: true,
+                  index: 200
+                })
+              }
+            />
+            <Button
+              title="300"
+              onPress={() =>
+                this.flatListRef.scrollToIndex({
+                  animated: true,
+                  index: 300
+                })
+              }
+            />
+            <Button
+              title="400"
+              onPress={() =>
+                this.flatListRef.scrollToIndex({
+                  animated: true,
+                  index: 400
+                })
+              }
+            />
+          </View>
+        )}
 
         <FlatList
           ref={ref => {
             this.flatListRef = ref;
           }}
-          onEndReachedThreshold={-0.1}
-          onEndReached={() => {
-            alert("refreshing");
-          }}
-          onRefresh={() => alert("refreshing")}
-          refreshing={false}
-          initialNumToRender={20}
+          onContentSizeChange={(contentWidth, contentHeight) =>
+            this.setState({
+              all: true
+            })
+          }
+          initialNumToRender={this.state.all ? 500 : 20}
           style={{ flex: 1, marginBottom: 20 }}
           data={this.state.data}
           renderItem={({ item }) => (
             <View
               style={{
-                height: 40,
+                // backgroundColor: item.color,
                 borderRadius: 10,
                 borderWidth: 1,
                 padding: 10,
